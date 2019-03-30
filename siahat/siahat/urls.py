@@ -17,9 +17,23 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-
+from django.contrib.auth import views as auth_views
+from users import views as user_views 
+from siahatapp import views as siahat_app
+from django.contrib.auth.models import User
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('siahatapp.urls'))
+    path('',include('siahatapp.urls')),
+    path('Signup', user_views.Signup, name='Signup'),
+    path('profile', user_views.profile, name='profile'),
+    path('Login',  auth_views.LoginView.as_view(template_name='users/Login.html'), name='Login'),
+    path('Logout', auth_views.LogoutView.as_view(template_name='users/Logout.html'), name='Logout'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
